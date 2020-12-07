@@ -39,9 +39,10 @@ This is an ongoing project, currently WIP. Feel free to contact us if you'd like
 
 1. Register your app at Huawei Developer
 2. Import the Plugin to your Unity project
-3. Configure your manifest
-4. Connect your game with the HMS Managers
-5. Connect the HMS Callbacks with your game
+3. Configure your Gradle files
+4. Configure your manifest
+5. Connect your game with the HMS Managers
+6. Connect the HMS Callbacks with your game
 
 ### 1 - Register your app at Huawei Developer
 
@@ -106,7 +107,15 @@ To import the plugin:
 5. Select Import and Unity will deploy the Unity plugin into your Assets Folder
 ____
 
-### 3 - Configure your Manifest
+### 3 - Configure your Gradle files
+
+    - Enable project gradle Edit -> Project Settings -> Player -> Android(icon) -> Publishing Settings -> Build -> **Custom Base Gradle Template**
+    - Enable app gradle Edit -> Project Settings -> Player -> Android(icon) -> Publishing Settings -> Build -> **Custom Launcher Gradle Template**
+    - Enable unity library gradle   Edit -> Project Settings -> Player -> Android(icon) -> Publishing Settings -> Build -> **Custom Main Gradle Template**
+
+____
+
+### 4 - Configure your Manifest
 
 In order for the plugin to work you need to add some information to your Android's Manifest. Make sure you have this information before proceeding.
 
@@ -163,7 +172,7 @@ And your manifest should look now like these:
     </manifest>
 ```
 ____
-### 4 Connect your game with any HMS Manager
+### 5 Connect your game with any HMS Manager
 
 In order for the plugin to work, you need to deploy the needed HMS Manager prefab inside your scene.
 
@@ -242,7 +251,7 @@ If you are not sure how to do this, search the demo folder and open the sample s
 ![Sample store](http://evil-mind.com/huawei/images/demo.jpg "Sample store")
 ____
 
-### 5 Connect the HMS Callbacks with you game
+### 6 Connect the HMS Callbacks with you game
 In order to receive the callback information from Huawei Mobile Services, you need to set the callbacks that will control the information retrieved from Huawei Servers.
 
 ## Kits Specification
