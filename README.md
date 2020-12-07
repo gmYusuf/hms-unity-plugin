@@ -21,8 +21,6 @@ This plugin supports:
 * Unity version 2018 - Developed in 2018 Branch
 
 
-**If analytics kit will not used, delete "agconnect-credential-1.0.0.300.aar" and  "hianalytics-5.0.3.300.aar" from "...Assets\Plugins\Android"**
-
 **Make sure to download the corresponding unity package for the Unity version you are using from the release section**
 
 ## Troubleshooting
@@ -31,16 +29,14 @@ Please check our [wiki page](https://github.com/EvilMindDevs/hms-unity-plugin/wi
 ## Status
 This is an ongoing project, currently WIP. Feel free to contact us if you'd like to collaborate and use Github issues for any problems you might encounter. We'd try to answer in no more than a working day.
 
-### Expected soon features
-* Analytics integration
-
 ## Connect your game Huawei Mobile Services in 5 easy steps
 
 1. Register your app at Huawei Developer
 2. Import the Plugin to your Unity project
-3. Configure your manifest
-4. Connect your game with the HMS Managers
-5. Connect the HMS Callbacks with your game
+3. Configure your gradle files
+4. Configure your manifest
+5. Connect your game with the HMS Managers
+6. Connect the HMS Callbacks with your game
 
 ### 1 - Register your app at Huawei Developer
 
@@ -105,7 +101,17 @@ To import the plugin:
 5. Select Import and Unity will deploy the Unity plugin into your Assets Folder
 ____
 
-### 3 - Configure your Manifest
+### 3 - Configure your Gradle Files
+1. Enable project gradle 
+    - Edit -> Project Settings -> Player -> Android(icon) -> Publishing Settings -> Build -> Custom Base Gradle Template
+2. Enable app gradle
+    - Edit -> Project Settings -> Player -> Android(icon) -> Publishing Settings -> Build -> Custom Launcher Gradle Template
+3. Enable unity library gradle
+    - Edit -> Project Settings -> Player -> Android(icon) -> Publishing Settings -> Build -> Custom Main Gradle Template
+
+____
+
+### 4 - Configure your Manifest
 
 In order for the plugin to work you need to add some information to your Android's Manifest. Make sure you have this information before proceeding.
 
@@ -162,7 +168,7 @@ And your manifest should look now like these:
     </manifest>
 ```
 ____
-### 4 Connect your game with any HMS Manager
+### 5 Connect your game with any HMS Manager
 
 In order for the plugin to work, you need to deploy the needed HMS Manager prefab inside your scene.
 
