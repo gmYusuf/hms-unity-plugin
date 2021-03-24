@@ -19,7 +19,7 @@ namespace HmsPlugin
         private AccountManager accountManager;
         public IArchivesClient playersClient { get; set; }
 
-        public AuthHuaweiId HuaweiId
+        public AuthAccount HuaweiId
         {
             get; set;
         }
@@ -114,7 +114,7 @@ namespace HmsPlugin
             string title = "";
             bool allowAddBtn = true, allowDeleteBtn = true;
             int maxArchive = 100;
-            playersClient.ShowArchiveListIntent(title, allowAddBtn, allowDeleteBtn, maxArchive);
+           // playersClient.ShowArchiveListIntent(title, allowAddBtn, allowDeleteBtn, maxArchive);
 
             return;
         }

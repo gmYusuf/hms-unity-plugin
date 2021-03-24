@@ -18,10 +18,10 @@ namespace HmsPlugin
 
         public Action<Player> OnGetPlayerInfoSuccess { get; set; }
         public Action<HMSException> OnGetPlayerInfoFailure { get; set; }
-        public Action<AuthHuaweiId> SignInSuccess { get; set; }
+        public Action<AuthAccount> SignInSuccess { get; set; }
         public Action<HMSException> SignInFailure { get; set; }
 
-        private HuaweiIdAuthService authService;
+        private AccountAuthService authService;
         // Make sure user already signed in!
         public void Start()
         {
@@ -37,7 +37,7 @@ namespace HmsPlugin
             Debug.Log("HMS GAMES init");
             authService = accountManager.GetGameAuthService();
 
-            ITask<AuthHuaweiId> taskAuthHuaweiId = authService.SilentSignIn();
+            ITask<AuthAccount> taskAuthHuaweiId = authService.SilentSignIn();
             taskAuthHuaweiId.AddOnSuccessListener((result) =>
             {
                 accountManager.HuaweiId = result;
