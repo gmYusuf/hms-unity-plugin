@@ -18,6 +18,9 @@ namespace HmsPlugin
         public static SaveGameManager GetInstance(string name = "GameManager") => GameObject.Find(name).GetComponent<SaveGameManager>();
         private AccountManager accountManager;
         public IArchivesClient playersClient { get; set; }
+		
+        public Action<ArchiveSummary> SelectedAction { get; set; }
+        public Action<bool> AddAction { get; set; }
 
         public AuthAccount HuaweiId
         {
@@ -114,9 +117,20 @@ namespace HmsPlugin
             string title = "";
             bool allowAddBtn = true, allowDeleteBtn = true;
             int maxArchive = 100;
-           // playersClient.ShowArchiveListIntent(title, allowAddBtn, allowDeleteBtn, maxArchive);
+
+            SelectedAction += ArchiveSelected;
+            AddAction += ArchiveAdded;
+            playersClient.ShowArchiveListIntent(title, allowAddBtn, allowDeleteBtn, maxArchive, SelectedAction, AddAction);
 
             return;
+        }
+        private void ArchiveSelected(ArchiveSummary archiveSummary)
+        {
+            Debug.Log("[HMS:] Selected Archive Summary " + archiveSummary.DescInfo);
+        }
+        private void ArchiveAdded(bool addArhive)
+        {
+            Debug.Log("[HMS:] Added Archive Summary " + addArhive);
         }
 
         //Resolving Archive Conflicts
