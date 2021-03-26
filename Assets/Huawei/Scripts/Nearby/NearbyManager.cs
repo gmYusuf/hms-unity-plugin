@@ -1,10 +1,7 @@
-using HuaweiMobileServices.Base;
 using HuaweiMobileServices.Nearby;
 using HuaweiMobileServices.Nearby.Discovery;
 using HuaweiMobileServices.Nearby.Transfer;
-using HuaweiMobileServices.Utils;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace HmsPlugin
@@ -12,10 +9,7 @@ namespace HmsPlugin
 
     public class NearbyManager : MonoBehaviour
     {
-        AndroidJavaClass jc;
-        AndroidJavaObject activity;
-        AndroidJavaObject context;
-        readonly static String scanInfo = "testInfo", remoteEndpointId = "RemoteEndpointId", 
+        readonly static String scanInfo = "testInfo", remoteEndpointId = "RemoteEndpointId",
                             receivedMessage = "Receive Success", transmittingMessage = "Receive Success";
         readonly private String myNameStr = "MyNameTest";
         readonly private String myServiceId = "NearbySnakeServiceid";
@@ -27,14 +21,12 @@ namespace HmsPlugin
 
         private void Start()
         {
-            jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-            activity = jc.GetStatic<AndroidJavaObject>("currentActivity");
-            context = activity.Call<AndroidJavaObject>("getApplicationContext");
+
         }
         private class NearbyManagerListener : IConnectCallBack, IScanEndpointCallback, IDataCallback
         {
             private readonly NearbyManager nearbyManagerObject;
-             public NearbyManagerListener(NearbyManager nearbyManager)
+            public NearbyManagerListener(NearbyManager nearbyManager)
             {
                 nearbyManagerObject = nearbyManager;
             }
@@ -56,7 +48,7 @@ namespace HmsPlugin
             public void onResult(string p0, ConnectResult resultObject)
             {
                 Debug.Log("[HMS] NearbyManager onResult");
-             
+
                 if (resultObject.GetStatus().StatusCode == StatusCode.STATUS_SUCCESS)
                 {
                     Debug.Log("[HMS] NearbyManager Connection Established. Stop discovery. Start to send file.");
@@ -75,15 +67,15 @@ namespace HmsPlugin
             {
                 Debug.Log("[HMS] NearbyManager OnLost");
                 nearbyManagerObject.OnLost?.Invoke(endpointId);
-            } 
+            }
 
             // DataCallback
             public void onReceived(string endpointId, AndroidJavaObject data)
             {
                 Data dataReceived = new Data(data);
                 if (dataReceived.DataType == Data.Type.BYTES)
-                { 
-                    String msg = System.Text.Encoding.UTF8.GetString(dataReceived.AsBytes);  
+                {
+                    String msg = System.Text.Encoding.UTF8.GetString(dataReceived.AsBytes);
                     if (msg.Equals(receivedMessage))
                     {
                         Debug.Log("[HMS] NearbyManager Received ACK. Send next.");
@@ -95,7 +87,7 @@ namespace HmsPlugin
                 Debug.Log("[HMS] NearbyManager onTransferUpdate");
             }
         }
-         
+
 
         //Starting Broadcasting
         public void SendFilesInner()
@@ -105,31 +97,31 @@ namespace HmsPlugin
             // Obtain the endpoint information.
             String mEndpointName = "testName";//Android.os.Build.DEVICE;
             String mFileServiceId = "testID";
-             // Select a broadcast policy.
+            // Select a broadcast policy.
             NearbyManagerListener nearbyManagerListener = new NearbyManagerListener(this);
             BroadcastOption advBuilder = new BroadcastOption.Builder().SetPolicy(Policy.POLICY_P2P).Build();
-           
-             // Start broadcasting.
-            Nearby.GetDiscoveryEngine(context).StartBroadcasting(mEndpointName, mFileServiceId, nearbyManagerListener, advBuilder);
+
+            // Start broadcasting.
+            Nearby.GetDiscoveryEngine().StartBroadcasting(mEndpointName, mFileServiceId, nearbyManagerListener, advBuilder);
             Debug.Log("Nearby: Start Broadcasting");
         }
         //Starting Scanning
 
         public void OnScanResult()
-        { 
+        {
             String mFileServiceId = "yusuf";
             NearbyManagerListener nearbyManagerListener = new NearbyManagerListener(this);
             Debug.Log("Nearby: OnScanResult1 Start Scan");
             ScanOption scanBuilder = new ScanOption.Builder().SetPolicy(Policy.POLICY_P2P).Build(); ;
             Debug.Log("Nearby: OnScanResult2 Start Scan");
             // Start scanning.
-            Nearby.GetDiscoveryEngine(context).StartScan(mFileServiceId, nearbyManagerListener, scanBuilder);
+            Nearby.GetDiscoveryEngine().StartScan(mFileServiceId, nearbyManagerListener, scanBuilder);
             Debug.Log("Nearby: OnScanResult3 Start Scan");
         }
         //Stopping Broadcasting
         public void StopBroadCasting()
         {
-            Nearby.GetDiscoveryEngine(context).StopBroadcasting();
+            Nearby.GetDiscoveryEngine().StopBroadcasting();
 
         }
         //Stopping Scanning
@@ -138,7 +130,7 @@ namespace HmsPlugin
             // Nearby.GetDiscoveryEngine(context).StopScan();
             HuaweiMobileServices.Nearby.Message.GetOption reportPolicy = HuaweiMobileServices.Nearby.Message.GetOption.DEFAULT;
             Debug.Log("Nearby: Start reportPolicy workes" + reportPolicy);
-             
+
 
         }
         private void InitiateConnection(string endpointId, ScanEndpointInfo scanEndpointInfo)
@@ -148,21 +140,21 @@ namespace HmsPlugin
                 Debug.Log("[HMS] Nearby Client found Server and request connection. Server id:" + scanEndpointInfo.Name);
                 NearbyManagerListener nearbyManagerListener = new NearbyManagerListener(this);
                 // Initiate a connection.
-                Nearby.GetDiscoveryEngine(context).RequestConnect(myNameStr, endpointId, nearbyManagerListener);
+                Nearby.GetDiscoveryEngine().RequestConnect(myNameStr, endpointId, nearbyManagerListener);
             }
         }
-       
+
         // Confirming the Connection
         // Accept the connection request
         private void AcceptConnectionRequest(string endpointId, ConnectInfo connectInfo)
         {
             NearbyManagerListener nearbyManagerListener = new NearbyManagerListener(this);
-            Nearby.GetDiscoveryEngine(context).AcceptConnect(endpointId, nearbyManagerListener);
+            Nearby.GetDiscoveryEngine().AcceptConnect(endpointId, nearbyManagerListener);
         }
         //Disconnecting from a Remote Endpoint
         public void DisconnectAllConnection()
         {
-            Nearby.GetDiscoveryEngine(context).DisconnectAll();
+            Nearby.GetDiscoveryEngine().DisconnectAll();
         }
         //////////////////////////
         //   Data Transmission  //
@@ -171,7 +163,7 @@ namespace HmsPlugin
         private void TransmittingBytes()
         {
             var message = System.Text.Encoding.UTF8.GetBytes(transmittingMessage);
-            Nearby.GetTransferEngine(context).SendData(remoteEndpointId, Data.FromBytes(message));
+            Nearby.GetTransferEngine().SendData(remoteEndpointId, Data.FromBytes(message));
         }
     }
 }

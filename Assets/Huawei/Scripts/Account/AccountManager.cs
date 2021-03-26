@@ -88,5 +88,16 @@ namespace HmsPlugin
             authService.SignOut();
             HuaweiId = null;
         }
+        public void CancelAuthorization()
+        {
+            ITask<HuaweiMobileServices.Utils.Void> taskAuthHuaweiId = authService.CancelAuthorization();
+            taskAuthHuaweiId.AddOnSuccessListener((result) =>
+            {
+                Debug.Log("[HMS]: CancelAuthorization onSuccess ");
+            }).AddOnFailureListener((exception) =>
+            {
+                OnSignInFailed?.Invoke(exception);
+            });
+        }
     }
 }
